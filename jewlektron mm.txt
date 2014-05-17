@@ -1,0 +1,12 @@
+Memory map of both systems:
+
+0000: Program Counter
+0001: CJR
+0002: Call Return pointer
+0003: Accumulator
+0004: Data Port IN
+0005: Data Port OUT
+0006: IN  Address
+0007: OUT Address
+0008: CPU Status 0 - OK 1 - HALT 2- Waiting for IN
+0009: Stack Pointer

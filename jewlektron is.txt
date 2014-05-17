@@ -1,0 +1,51 @@
+Instruction set:
+
+00: HALT      - Halt the processor
+01: MOC #A,#B - Move the content of cell #B to cell #A
+02: MOV #C,V  - Move value into cell #C
+03: LDA #D    - Load data from cell #D into accumulator
+04: STA #C    - Store data from accumulator to cell #C
+05: ADD #C    - Add contents of accumulator to cell #C
+06: ADC #A,#B - Add cell #A and #B, result stored in cell #A
+07: ACA #C    - Add cell #C to accumulator, result stored in accumulator
+08: SUB #C    - Subtract contents of accumulator from cell #C
+09: SDC #A,#B - Subtract cell #A from result stored in cell #A
+10: SCA #C    - Subtract contents of accumulator to cell #C
+11: MUL #C    - Multiply contents of accumulator to cell #C
+12: MDC #A,#B - Multiply cell #A and #B, result stored in #A
+13: MCA #C    - Multiply cell #C with accumulator, result stores in accumulator.
+14: DIV #C    - Divide cell #C with accumulator
+15: DDC #A,#B - Divide cell #A with cell #B, result stored in cell #A
+16: DCA #C    - Divide accumulator with cell #C
+17: JMP #a    - Jump to #a
+18: JIE #A,#B - Jump if cell #A and cell #B are equal(CJR used as pointer)
+19: JIL #A,#B - Jump if cell #A is less than cell #B(CJR used as pointer)
+20: JIG #A,#B - Jump if cell #A is greater than cell #B(CJR used as pointer)
+21: JAE #C    - Jump if cell #C is equal to accumulator)CJR used as pointer)
+22: JAL #C    - Jump if cell #C is less than accumulator(CJR used as pointer)
+23: JAG #C    - Jump if cell #C is greater than accumulator(CJR used as pointer)
+24: SCJ a     - Set CJR to a
+25: MCR       - Set CJR to accumulator
+26: MCC #C    - Set CJR to value of cell #C
+27: CALL #C   - Call procedure at cell #C, sets return pointer to the next cell from CALL
+28: RET       - Returns from call, jumps to #RP
+29: SSP a     - Sets stack pointer to a
+30: MSP       - Sets stack pointer to accumulator
+31: MSC #C    - Sets stack pointer to the value of cell #C, 
+32: AND #C    - AND the contents of cell #C and accumulator, result stored in cell #C
+33: ANC #A,#B - AND cell #A and #B, result stored in cell #A
+34: FRT       - *fart
+35: ANA #C    - AND cell #C with accumulator, result stored in accumulator
+36: OR  #C    - OR the contents of cell #C and accumulator, result stored in cell #C
+37: ORC #A,#B - OR the contents of cell #A and #B, result stored in #A
+38: ORA #C    - OR the contents of cell #C and accumulator, result stores in accumulator
+39: XOR #C    - XOR the contents of cell #C and accumulator, result stored in cell #C
+40: XOC #A,#B - XOR the contents of cell #A and #B, result stored in cell #A
+41: XOA #C    - XOR the contents of cell #C and accumulator, result stored in accumulator
+42: NOR #C    - NOR the contents of cell #C and accumulator, result stored in cell #C
+43: NOC #A,#B - NOR the contents of cell #A and #B, result stored in cell #A
+44: NOA #C    - NOR the contents of cell #C and accumulator, result stored in accumulator
+45: PUSH      - PUSH contents of accumulator to stack
+46: POP       - POP from stack into accumulator
+47: IN  a     - Read input port a into accumulator
+48: OUT a     - Write accumulator to port a: 
