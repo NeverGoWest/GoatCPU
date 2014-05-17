@@ -1,6 +1,8 @@
+# "Read the Iliad lately? hint refers to. So do such hints as Everyone has a weakness! What is his??? and Homer will show you the way."
+
 # libraries and stuff
 import random # for later usage
-import winsound # BLEEP!
+# import winsound # BLEEP!
 
 # initialization
 # memdimensions = int(input("Memory size(best if a number divisible by 2 "))
@@ -13,6 +15,7 @@ comhalt = 1
 com = ""
 comerror = 0
 win = 1
+jmp = 0
 
 # instruction set as a list, for debugging
 islist = ["HALT", "MOC", "MOV", "LDA", "STA", "ADD", "ADC", "ACA", "SUB", "SDC", "SCA", "MUL", "MDC", "MCA", "DIV", "DDC", "DCA", "JMP", "JIE", "JIL", "JIG", "JAE", "JAL", "JAG", "SCJ", "MCR", "MCC", "CALL", "RET", "SSP", "MSP", "MSC", "AND", "ANC", "FRT", "ANA", "OR", "ORC", "ORA", "XOR", "XOC", "XOA", "NOR", "NOC", "NOA", "PUSH", "POP", "IN", "OUT"]
@@ -63,11 +66,11 @@ def assemble(adress):
 def ConsoleOutput():
     pass
 
-def Bleep():
-    if win == 0:
-        print('\a', end='')
-    else:
-        winsound.Beep(2500, 500)
+#def Bleep():
+#    if win == 0:
+#        print('\a', end='')
+#    else:
+#        winsound.Beep(2500, 500)
 
 
 # test program
@@ -82,9 +85,12 @@ def LoadTest():
 # Step()
 def Step():
     global mem
+
+    jmp = 0
+    
     if debug == 1:
         print("Stepping!")
-        print(mem[mem[mem[0]]])
+        print(mem[mem[0]])
         print(mem[0])
         print(islist[instr()])
     if mem[8] == 1:
@@ -120,8 +126,30 @@ def Step():
         mem[3] = mem[mem[ip()+1]] + mem[3]
     if mem[mem[0]] == 8: # SUB #C
         mem[mem[ip()+1]] = mem[mem[ip()+1]] - mem[3]
-    
-    mem[0] = mem[0] + 3
+    if mem[mem[0]] == 9: # SDC #A,#B
+        mem[mem[ip()+1]] = mem[mem[ip()+1]] + mem[mem[ip()+2]]
+    if mem[mem[0]] == 10: # SCA #C
+        mem[3] = mem[3] - mem[mem[ip()+1]]
+    if mem[mem[0]] == 11: # MUL #C
+        mem[mem[ip()+1]] = mem[mem[ip()+1]] * mem[3]
+    if mem[mem[0]] == 12: # MDC #A,#B
+        mem[mem[ip()+1]] = mem[mem[ip()+1]] * mem[mem[ip()+2]]
+    if mem[mem[0]] == 13: # MCA #C
+        mem[3] = mem[3] * mem[mem[ip()+1]]
+    if mem[mem[0]] == 14: # DIV #C
+        mem[mem[ip()+1]] = mem[mem[ip()+1]] / mem[3]
+    if mem[mem[0]] == 15: # DDC #A,#B
+        mem[mem[ip()+1]] = mem[mem[ip()+1]] / mem[mem[ip()+2]]
+    if mem[mem[0]] == 16: # DCA #C
+        mem[3] = mem[3] / mem[mem[ip()+1]]
+    if mem[mem[0]] == 17: # JMP #a
+        mem[0] = mem[mem[ip()+1]]
+        jmp = 1
+        
+    if jmp == 0:
+        
+        mem[0] = mem[0] + 3
+        
 
     return mem[8]
         
@@ -132,7 +160,7 @@ def Step():
 
 # program loop
 while com != "quit":
-    global mem
+    # global mem
     
     ConsoleOutput()
 
@@ -146,11 +174,14 @@ while com != "quit":
         
         if com == "halt":
             comhalt = 1
+            mem[8] = 1
         if com == "unhalt":
             comhalt = 0
+            mem[8] = 0
         if com == "run":
             print("Running!")
             comhalt = 0
+            mem[8] = 0
             while comhalt == 0:
                 Step()
                 if mem[8] == 1:
@@ -163,20 +194,30 @@ while com != "quit":
                 print(comargs[1], ":", mem[int(comargs[1])])
                 print()
         if comargs[0] == "dump":
-            dumpmem(int(comargs[1]), int(comargs[2]))
+            if len(comargs) != 3:
+                print("Insufficient arguments.")
+            else:
+                dumpmem(int(comargs[1]), int(comargs[2]))
         if comargs[0] == "poke":
-            mem[int(comargs[1])] = int(comargs[2])
-            print("Wrote", comargs[2], "on cell", comargs[1])
+            if len(comargs) != 3:
+                print("Insufficient arguments.")
+            else:
+                mem[int(comargs[1])] = int(comargs[2])
+                print("Wrote", comargs[2], "on cell", comargs[1])
         if comargs[0] == "asm":
-            assemble(int(comargs[1]))
+            if len(comargs) != 2:
+                print("No argument passed, defaulting to 10.")
+                assemble(10)
+            else:
+                assemble(int(comargs[1]))
         if com == "debugon":
             debug = 1
         if com == "debugoff":
             debug = 0
         if com == "loadtest":
             LoadTest()
-        if com == "testbleep":
-            Bleep()
+        #if com == "testbleep":
+        #    Bleep()
         if com == "linux":
             win = 0
         if com == "windows":
