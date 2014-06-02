@@ -143,7 +143,7 @@ def Step():
     if mem[mem[0]] == 16: # DCA #C
         mem[3] = mem[3] / mem[mem[ip()+1]]
     if mem[mem[0]] == 17: # JMP #a
-        mem[0] = mem[mem[ip()+1]]
+        mem[0] = mem[ip()+1]
         jmp = 1
         
     if jmp == 0:
